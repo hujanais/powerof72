@@ -27,28 +27,22 @@ def cost_average(ticker, principal, addition, frequency, start_date, num_months)
     # set the frequency of investing
     if frequency == "weekly":
         freq_days = 7
-        freq_weeks = 1
     elif frequency == "biweekly":
-        freq_days = 3
-        freq_weeks = 2
+        freq_days = 14
     elif frequency == "monthly":
         freq_days = 30
-        freq_weeks = 4
     elif frequency == "annually":
         freq_days = 365
-        freq_weeks = 52
     elif frequency == "biannually":
         freq_days = 365 // 2
-        freq_weeks = 52 // 2
     elif frequency == "quarterly":
         freq_days = 365 // 4
-        freq_weeks = 52 // 4
     else:
         raise ValueError(
             "Frequency must be one of 'weekly', 'biweekly', 'monthly', 'annually', 'biannually', or 'quarterly'."
         )
 
-    invest_count = 0
+    last_invest_date = df_prices.index[0]
     for index, row in df_prices[1:].iterrows():
         currentDate = index
         closePrice = row["close"]
@@ -59,14 +53,14 @@ def cost_average(ticker, principal, addition, frequency, start_date, num_months)
             newShares = dividend * totalShares / closePrice
             totalSharesWithDivs += newShares
 
-        # print 'invest' every frequency_weeks on Fridays
-        if currentDate.weekday() == 4 and invest_count % freq_weeks == 0:
-            print(f"invest on {currentDate}")
-            invest_count += 1
+        deltaDays = (currentDate - last_invest_date).days
 
-        # increment invest count only on Fridays
-        if currentDate.weekday() == 4:
-            invest_count += 1
+        if currentDate.weekday() == 4 and deltaDays >= freq_days:
+            newShares = addition / closePrice
+            totalShares += newShares
+            totalSharesWithDivs += newShares
+            print(f"invest on {currentDate} - {deltaDays} - {newShares}")
+            last_invest_date = currentDate
 
         # update
         balance = totalShares * closePrice
@@ -78,10 +72,10 @@ def cost_average(ticker, principal, addition, frequency, start_date, num_months)
 
 
 ticker = "SCHD"
-start_date = datetime(2010, 1, 1)
-principal = 1000
-frequency = "annually"  # 'weekly', 'biweekly', 'monthly', 'annually', 'biannually', or 'quarterly'
-addition = 0
+start_date = datetime(2015, 1, 1)
+principal = 100
+frequency = "biweekly"  # 'weekly', 'biweekly', 'monthly', 'annually', 'biannually', or 'quarterly'
+addition = 100
 nMonths = 48
 
 balance = cost_average(ticker, 1000, addition, frequency, start_date, nMonths)
