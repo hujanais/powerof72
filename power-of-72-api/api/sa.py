@@ -12,10 +12,10 @@ class handler(BaseHTTPRequestHandler):
         ticker = dic["ticker"]
         strStartDate = dic["startdate"]  # 03-15-2019
         startDate = datetime.strptime(strStartDate, "%m-%d-%Y")
-        principal = dic["principal"]
-        addition = dic["addition"]
+        principal = int(dic["principal"])
+        addition = int(dic["addition"])
         frequency = dic["frequency"]
-        nMonths = dic["months"]
+        nMonths = int(dic["months"])
 
         print(strStartDate, startDate)
 
