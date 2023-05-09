@@ -3,8 +3,9 @@ from datetime import datetime, timedelta
 from http.server import BaseHTTPRequestHandler
 from urllib import parse
 
+
 class handler(BaseHTTPRequestHandler):
-    # GET /api/sa?ticker=xxx%principal=1000%addition=0%frequency=monthly%startdate=MM/dd/yyyy%months=48
+    # GET /api/sa?ticker=xxx&principal=1000&addition=0&frequency=monthly&startdate=MM-dd-yyyy&months=48
     def do_GET(self):
         # querystring ?ticker=xxx&expiry=xx-xx-xxxx
         dic = dict(parse.parse_qsl(parse.urlsplit(self.path).query))
@@ -15,6 +16,8 @@ class handler(BaseHTTPRequestHandler):
         addition = dic["addition"]
         frequency = dic["frequency"]
         nMonths = dic["months"]
+
+        print(strStartDate, startDate)
 
         self.send_response(200)
         self.send_header("Content-type", "application/json")
