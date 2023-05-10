@@ -11,8 +11,7 @@ warnings.filterwarnings(
 )
 
 
-def cost_average(ticker, principal, addition, frequency, start_date, num_months):
-    end_date = start_date + timedelta(days=num_months * 30)
+def cost_average(ticker, principal, addition, frequency, start_date, end_date):
     df_prices = si.get_data(ticker, start_date, end_date)
     df_dividends = si.get_dividends(ticker, start_date=start_date, end_date=end_date)
 

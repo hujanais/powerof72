@@ -5,25 +5,24 @@ from urllib import parse
 
 
 class handler(BaseHTTPRequestHandler):
-    # GET /api/sa?ticker=xxx&principal=1000&addition=0&frequency=monthly&startdate=MM-dd-yyyy&months=48
+    # GET /api/sa?ticker=xxx&principal=1000&addition=0&frequency=monthly&startdate=MM-dd-yyyy&startdate=MM-dd-yyyy
     def do_GET(self):
         # querystring ?ticker=xxx&expiry=xx-xx-xxxx
         dic = dict(parse.parse_qsl(parse.urlsplit(self.path).query))
         ticker = dic["ticker"]
         strStartDate = dic["startdate"]  # 03-15-2019
         startDate = datetime.strptime(strStartDate, "%m-%d-%Y")
+        strEndDate = dic["enddate"]  # 03-15-2019
+        endDate = datetime.strptime(strEndDate, "%m-%d-%Y")
         principal = int(dic["principal"])
         addition = int(dic["addition"])
         frequency = dic["frequency"]
-        nMonths = int(dic["months"])
-
-        print(strStartDate, startDate)
 
         self.send_response(200)
         self.send_header("Content-type", "application/json")
         self.end_headers()
 
-        df = cost_average(ticker, principal, addition, frequency, startDate, nMonths)
+        df = cost_average(ticker, principal, addition, frequency, startDate, endDate)
         jsonData = df[["Date", "BalanceNoDivs", "Balance"]].to_json(orient="records")
 
         self.wfile.write(jsonData.encode(encoding="utf_8"))
