@@ -1,0 +1,18 @@
+.main-container {
+  height: inherit;
+  padding: 10px;
+
+  &__card {
+    display: grid;
+    height: 100%;
+    grid-template-rows: auto 1fr;
+  }
+
+  .action-area {
+    border: 1px solid orange;
+  }
+
+  .result-area {
+    border: 1px solid orange;
+  }
+}
