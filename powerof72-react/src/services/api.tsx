@@ -1,6 +1,6 @@
 class ApiService {
-  getData(ticker: string) {
-    return 'ticker';
+  getData(ticker: string): string {
+    return ticker;
   }
 }
 

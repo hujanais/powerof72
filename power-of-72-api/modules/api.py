@@ -10,7 +10,6 @@ warnings.filterwarnings(
     message="The behavior of 'to_datetime' with 'unit' when parsing strings is deprecated.",
 )
 
-
 def cost_average(ticker, principal, addition, frequency, start_date, end_date):
     df_prices = si.get_data(ticker, start_date, end_date)
     df_dividends = si.get_dividends(ticker, start_date=start_date, end_date=end_date)
@@ -69,3 +68,19 @@ def cost_average(ticker, principal, addition, frequency, start_date, end_date):
         dfResults.loc[len(dfResults)] = [currentDate, balance, balanceWithDiv]
 
     return dfResults
+
+
+def test():
+    ticker = 'VTI'
+    principal = 1000
+    addition = 100
+    frequency = 'bimonthly'
+    
+    today = datetime.date.today()
+    numOfYears = 10
+    startDate = today - datetime.timedelta(years=numOfYears)
+    dfResult = cost_average(ticker, principal, addition, frequency, start_date, today)
+
+    print(dfResult.tail(10))
+
+test()

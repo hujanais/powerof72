@@ -5,15 +5,15 @@ from urllib import parse
 
 
 class handler(BaseHTTPRequestHandler):
-    # GET /api/sa?ticker=xxx&principal=1000&addition=0&frequency=monthly&startdate=MM-dd-yyyy&startdate=MM-dd-yyyy
+    # GET /api/sa?ticker=xxx&principal=1000&addition=0&frequency=monthly&numOfYears=years
     def do_GET(self):
         # querystring ?ticker=xxx&expiry=xx-xx-xxxx
         dic = dict(parse.parse_qsl(parse.urlsplit(self.path).query))
         ticker = dic["ticker"]
-        strStartDate = dic["startdate"]  # 03-15-2019
-        startDate = datetime.strptime(strStartDate, "%m-%d-%Y")
-        strEndDate = dic["enddate"]  # 03-15-2019
-        endDate = datetime.strptime(strEndDate, "%m-%d-%Y")
+        today = datetime.date.today()
+        numOfYears = dic['numOfYears']
+        startDate = today - datetime.timedelta(years=numOfYears)
+        
         principal = int(dic["principal"])
         addition = int(dic["addition"])
         frequency = dic["frequency"]

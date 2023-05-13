@@ -9,6 +9,7 @@ export const MainComponent = () => {
   const [data, setData] = useState('---');
 
   const handleOnRequest = (request: SARequest) => {
+    console.log(apiService.getData(request.ticker));
     console.log(request);
   };
 
