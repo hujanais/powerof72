@@ -1,5 +1,5 @@
 from yahoo_fin import stock_info as si
-from datetime import datetime, timedelta
+import datetime
 import pandas as pd
 import warnings
 
@@ -10,9 +10,11 @@ warnings.filterwarnings(
     message="The behavior of 'to_datetime' with 'unit' when parsing strings is deprecated.",
 )
 
+
 def cost_average(ticker, principal, addition, frequency, start_date, end_date):
     df_prices = si.get_data(ticker, start_date, end_date)
-    df_dividends = si.get_dividends(ticker, start_date=start_date, end_date=end_date)
+    df_dividends = si.get_dividends(
+        ticker, start_date=start_date, end_date=end_date)
 
     # build result dataFrame
     dfResults = pd.DataFrame(columns=["Date", "BalanceNoDivs", "Balance"])
@@ -54,18 +56,21 @@ def cost_average(ticker, principal, addition, frequency, start_date, end_date):
 
         deltaDays = (currentDate - last_invest_date).days
 
+        # cost average on first available Friday
         if currentDate.weekday() == 4 and deltaDays >= freq_days:
             newShares = addition / closePrice
             totalShares += newShares
             totalSharesWithDivs += newShares
-            print(f"invest on {currentDate} - {deltaDays} - {newShares}")
             last_invest_date = currentDate
 
         # update
         balance = totalShares * closePrice
         balanceWithDiv = totalSharesWithDivs * closePrice
 
-        dfResults.loc[len(dfResults)] = [currentDate, balance, balanceWithDiv]
+        # append data into the results dataframe but only for Fridays.
+        if currentDate.weekday() == 4:
+            dfResults.loc[len(dfResults)] = [
+                currentDate, balance, balanceWithDiv]
 
     return dfResults
 
@@ -74,13 +79,18 @@ def test():
     ticker = 'VTI'
     principal = 1000
     addition = 100
-    frequency = 'bimonthly'
-    
+    frequency = 'monthly'
+
     today = datetime.date.today()
     numOfYears = 10
-    startDate = today - datetime.timedelta(years=numOfYears)
-    dfResult = cost_average(ticker, principal, addition, frequency, start_date, today)
+    start_date = today - datetime.timedelta(days=numOfYears * 365)
+    dfResult = cost_average(ticker, principal, addition,
+                            frequency, start_date, today)
 
-    print(dfResult.tail(10))
+    jsonData = dfResult[["Date", "BalanceNoDivs", "Balance"]
+                        ].to_json(orient="records")
+
+    print(jsonData)
+
 
 test()

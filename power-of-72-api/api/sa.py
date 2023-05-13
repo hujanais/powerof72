@@ -1,5 +1,5 @@
 from modules.api import cost_average
-from datetime import datetime, timedelta
+import datetime
 from http.server import BaseHTTPRequestHandler
 from urllib import parse
 
@@ -10,10 +10,7 @@ class handler(BaseHTTPRequestHandler):
         # querystring ?ticker=xxx&expiry=xx-xx-xxxx
         dic = dict(parse.parse_qsl(parse.urlsplit(self.path).query))
         ticker = dic["ticker"]
-        today = datetime.date.today()
-        numOfYears = dic['numOfYears']
-        startDate = today - datetime.timedelta(years=numOfYears)
-        
+        numOfYears = int(dic['numOfYears'])
         principal = int(dic["principal"])
         addition = int(dic["addition"])
         frequency = dic["frequency"]
@@ -22,8 +19,14 @@ class handler(BaseHTTPRequestHandler):
         self.send_header("Content-type", "application/json")
         self.end_headers()
 
-        df = cost_average(ticker, principal, addition, frequency, startDate, endDate)
-        jsonData = df[["Date", "BalanceNoDivs", "Balance"]].to_json(orient="records")
+        today = datetime.date.today()
+        start_date = today - datetime.timedelta(days=numOfYears * 365)
+
+        dfResult = cost_average(ticker, principal, addition,
+                                frequency, start_date, today)
+
+        jsonData = dfResult[["Date", "BalanceNoDivs", "Balance"]
+                            ].to_json(orient="records")
 
         self.wfile.write(jsonData.encode(encoding="utf_8"))
 
