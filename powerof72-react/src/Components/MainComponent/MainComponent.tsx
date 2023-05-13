@@ -3,14 +3,14 @@ import './MainComponent.scss';
 import apiService from '../../services/api';
 import { InputComponent } from '../InputComponent/InputComponent';
 import { ResultComponent } from '../ResultComponent/ResultComponent';
-import { SARequest } from '../../Models/data-model';
+import { SARequest, SAResponse } from '../../Models/data-model';
 
 export const MainComponent = () => {
-  const [data, setData] = useState('---');
+  const [jsonArr, setJsonArr] = useState<SAResponse[]>([]);
 
-  const handleOnRequest = (request: SARequest) => {
-    console.log(apiService.getData(request.ticker));
-    console.log(request);
+  const handleOnRequest = async (request: SARequest) => {
+    const jsonArr = await apiService.getData(request);
+    setJsonArr(jsonArr);
   };
 
   return (
@@ -20,7 +20,7 @@ export const MainComponent = () => {
           <InputComponent onRequest={handleOnRequest}></InputComponent>
         </div>
         <div className='result-area'>
-          <ResultComponent></ResultComponent>
+          <ResultComponent jsonArr={jsonArr}></ResultComponent>
         </div>
       </div>
     </div>

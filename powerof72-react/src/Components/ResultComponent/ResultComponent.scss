@@ -1,0 +1,13 @@
+.results-container {
+    height: 100%;
+    display: grid;
+    grid-template-rows: 20% 80%;
+
+    &__table {
+        overflow-y: scroll;
+    }
+
+    &__graph {
+        background-color: lightblue;
+    }
+}

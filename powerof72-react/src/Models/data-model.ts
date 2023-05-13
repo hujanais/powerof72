@@ -1,9 +1,9 @@
 export type FrequencyOptions = 'weekly' | 'biweekly' | 'monthly' | 'quarterly' | 'biannually' | 'annually'
 
 export type SAResponse = {
-    timestamp: number;
-    total_nodiv: number;    // the cumulative total without dividend
-    total: number;          // the cumulative total with dividend re-investment
+    Date: number;
+    BalanceNoDivs: number;    // the cumulative total without dividend
+    Balance: number;          // the cumulative total with dividend re-investment
 }
 
 export type SARequest = {
