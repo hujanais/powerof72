@@ -1,13 +1,28 @@
 .results-container {
-    height: 100%;
-    display: grid;
-    grid-template-rows: 20% 80%;
+  height: 100%;
+  display: grid;
+  grid-template-rows: 20% 80%;
 
-    &__table {
-        overflow-y: scroll;
-    }
+  &__table {
+    border: 5px solid green;
+    overflow-y: scroll;
 
-    &__graph {
-        background-color: lightblue;
+    .div-table {
+      height: 100%;
+      width: 100%;
     }
+  }
+
+  &__graph {
+    border: 5px solid green;
+    background-color: lightblue;
+
+    .div-graph {
+      height: 100%;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  }
 }
