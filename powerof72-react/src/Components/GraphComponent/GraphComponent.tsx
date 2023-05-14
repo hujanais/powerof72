@@ -68,8 +68,8 @@ function GraphComponent(props: GraphComponentProps) {
 
   return (
     <div className='chart-container'>
-      <h2 style={{ textAlign: 'center' }}>Line Chart</h2>
-      <Line data={data} />
+      {/* <h2 style={{ textAlign: 'center' }}>Line Chart</h2> */}
+      <Line data={data} style={{ width: '80%', height: '80%' }} />
     </div>
   );
 }

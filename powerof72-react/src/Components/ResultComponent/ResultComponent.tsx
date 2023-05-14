@@ -17,9 +17,7 @@ export const ResultComponent = (props: ResultComponentProps) => {
         </div>
       </div>
       <div className='results-container__graph'>
-        <div className='div-graph'>
-          <GraphComponent jsonArr={props.jsonArr}></GraphComponent>
-        </div>
+        <GraphComponent jsonArr={props.jsonArr}></GraphComponent>
       </div>
     </div>
   );
