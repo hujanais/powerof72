@@ -1,9 +1,9 @@
-import React from 'react';
-import { Line } from 'react-chartjs-2';
+import React, { useEffect } from 'react';
 import { SAResponse } from '../../Models/data-model';
+import './GraphComponent.scss';
 
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from 'chart.js';
-
+import { Line } from 'react-chartjs-2';
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
 const data = {
@@ -12,17 +12,21 @@ const data = {
     {
       label: 'no-div',
       data: [],
-      backgroundColor: ['rgba(255, 0, 0, 0.6)'],
+      pointRadius: 0,
       borderWidth: 1,
+      borderColor: '#9e9e9e',
     },
     {
       label: 'div',
       data: [],
-      backgroundColor: ['rgba(0, 0, 255, 0.6)'],
+      pointRadius: 0,
       borderWidth: 1,
+      borderColor: '#4caf50',
     },
   ],
   options: {
+    responsive: true,
+    maintainAspectRatio: false,
     scales: {
       //   xAxes: [
       //     {
@@ -41,15 +45,6 @@ const data = {
           type: 'linear',
           position: 'left',
         },
-        {
-          id: 'B',
-          type: 'linear',
-          position: 'right',
-          ticks: {
-            max: 1,
-            min: 0,
-          },
-        },
       ],
     },
   },
@@ -60,16 +55,17 @@ export type GraphComponentProps = {
 };
 
 function GraphComponent(props: GraphComponentProps) {
-  for (const row of props.jsonArr) {
-    (data.labels as number[]).push(row.Date);
-    (data.datasets[0].data as number[]).push(row.BalanceNoDivs);
-    (data.datasets[1].data as number[]).push(row.Balance);
-  }
+  useEffect(() => {
+    for (const row of props.jsonArr) {
+      (data.labels as number[]).push(row.Date);
+      (data.datasets[0].data as number[]).push(row.BalanceNoDivs);
+      (data.datasets[1].data as number[]).push(row.Balance);
+    }
+  });
 
   return (
     <div className='chart-container'>
-      {/* <h2 style={{ textAlign: 'center' }}>Line Chart</h2> */}
-      <Line data={data} style={{ width: '80%', height: '80%' }} />
+      <div className='center-me'>{<Line data={data} />}</div>
     </div>
   );
 }

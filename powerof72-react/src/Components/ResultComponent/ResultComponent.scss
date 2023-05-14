@@ -1,7 +1,8 @@
 .results-container {
   height: 100%;
-  display: grid;
-  grid-template-rows: 20% 80%;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
 
   &__table {
     border: 1px solid green;
@@ -13,6 +14,7 @@
   }
 
   &__graph {
-    border: 1px solid green;
+    border: 1px solid gray;
+    flex: 1;
   }
 }

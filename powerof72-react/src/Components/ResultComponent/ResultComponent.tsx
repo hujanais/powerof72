@@ -12,9 +12,7 @@ export const ResultComponent = (props: ResultComponentProps) => {
   return (
     <div className='results-container'>
       <div className='results-container__table'>
-        <div className='div-table'>
-          <TableComponent jsonArr={props.jsonArr}></TableComponent>
-        </div>
+        <TableComponent jsonArr={props.jsonArr}></TableComponent>
       </div>
       <div className='results-container__graph'>
         <GraphComponent jsonArr={props.jsonArr}></GraphComponent>
