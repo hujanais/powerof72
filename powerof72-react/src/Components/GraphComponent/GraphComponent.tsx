@@ -2,9 +2,55 @@ import React, { useEffect } from 'react';
 import { SAResponse } from '../../Models/data-model';
 import './GraphComponent.scss';
 
-import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from 'chart.js';
+import { Chart as ChartJS, CategoryScale, TimeScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from 'chart.js';
 import { Line } from 'react-chartjs-2';
-ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
+import 'chartjs-adapter-date-fns';
+ChartJS.register(CategoryScale, LinearScale, TimeScale, PointElement, LineElement, Title, Tooltip, Legend);
+
+const options = {
+  responsive: true,
+  maintainAspectRatio: false,
+  scales: {
+    xAxes: [
+      {
+        type: 'time',
+        time: {
+          unit: 'month',
+        },
+        position: 'bottom',
+        gridLines: {
+          color: '#9E9E9E',
+        },
+        ticks: {
+          fontColor: '#DEDEDE',
+        },
+        scaleLabel: {
+          display: true,
+          labelString: 'Date',
+          fontColor: '#DEDEDE',
+          fontSize: 16,
+        },
+      },
+    ],
+    yAxes: [
+      {
+        position: 'left',
+        gridLines: {
+          color: '#9E9E9E',
+        },
+        ticks: {
+          fontColor: '#DEDEDE',
+        },
+        scaleLabel: {
+          display: true,
+          labelString: 'Balance',
+          fontColor: '#DEDEDE',
+          fontSize: 16,
+        },
+      },
+    ],
+  },
+};
 
 const data = {
   labels: [],
@@ -24,30 +70,6 @@ const data = {
       borderColor: '#4caf50',
     },
   ],
-  options: {
-    responsive: true,
-    maintainAspectRatio: false,
-    scales: {
-      //   xAxes: [
-      //     {
-      //       ticks: {
-      //         callback: (val: number) => val, // or a different way to convert timestamp to date
-      //       },
-      //       display: true,
-      //       scaleLabel: {
-      //         labelString: 'Date',
-      //       },
-      //     },
-      //   ],
-      yAxes: [
-        {
-          id: 'A',
-          type: 'linear',
-          position: 'left',
-        },
-      ],
-    },
-  },
 };
 
 export type GraphComponentProps = {
@@ -65,7 +87,28 @@ function GraphComponent(props: GraphComponentProps) {
 
   return (
     <div className='chart-container'>
-      <div className='center-me'>{<Line data={data} />}</div>
+      <div className='center-me'>
+        {
+          <Line
+            data={data}
+            options={{
+              responsive: true,
+              maintainAspectRatio: false,
+              scales: {
+                xAxis: {
+                  type: 'time',
+                  time: {
+                    displayFormats: {
+                      month: 'MMM yyyy',
+                    },
+                  },
+                },
+                yAxis: {},
+              },
+            }}
+          />
+        }
+      </div>
     </div>
   );
 }

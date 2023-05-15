@@ -6,3 +6,6 @@ npm install react-router-dom
 npm install rxjs
 rafc
 clear cache. open dev tools (this must be open for it to work) click and hold the reload button. a menu will appear - select "Empty Cache and hard reload"Oct 29
+
+chart-js nightmare.
+npm install date-fns chartjs-adapter-date-fns --save
