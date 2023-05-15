@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { SAResponse } from '../../Models/data-model';
 import './GraphComponent.scss';
 
@@ -69,17 +69,28 @@ export type GraphComponentProps = {
 };
 
 function GraphComponent(props: GraphComponentProps) {
+  const lineRef = useRef(null); // create a reference to the Line component
+
   useEffect(() => {
+    (data.labels as number[]).length = 0;
+    (data.datasets[0].data as number[]).length = 0;
+    (data.datasets[1].data as number[]).length = 0;
+
     for (const row of props.jsonArr) {
       (data.labels as number[]).push(row.Date);
       (data.datasets[0].data as number[]).push(row.BalanceNoDivs);
       (data.datasets[1].data as number[]).push(row.Balance);
     }
+
+    if (lineRef.current) {
+      (lineRef.current as any).data = data; // update the Chart.js instance's data
+      (lineRef.current as any).update(); // redraw the chart
+    }
   });
 
   return (
     <div className='chart-container'>
-      <div className='center-me'>{<Line data={data} options={options} />}</div>
+      <div className='center-me'>{<Line ref={lineRef} data={data} options={options} />}</div>
     </div>
   );
 }
