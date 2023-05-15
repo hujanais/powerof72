@@ -7,7 +7,7 @@ import { Line } from 'react-chartjs-2';
 import 'chartjs-adapter-date-fns';
 ChartJS.register(CategoryScale, LinearScale, TimeScale, PointElement, LineElement, Title, Tooltip, Legend);
 
-const options = {
+const options: any = {
   responsive: true,
   maintainAspectRatio: false,
   scales: {
@@ -16,36 +16,28 @@ const options = {
         type: 'time',
         time: {
           unit: 'month',
-        },
-        position: 'bottom',
-        gridLines: {
-          color: '#9E9E9E',
+          displayFormats: {
+            month: 'MMM yyyy',
+          },
         },
         ticks: {
-          fontColor: '#DEDEDE',
+          maxTicksLimit: 20,
         },
         scaleLabel: {
           display: true,
           labelString: 'Date',
-          fontColor: '#DEDEDE',
-          fontSize: 16,
         },
       },
     ],
     yAxes: [
       {
-        position: 'left',
-        gridLines: {
-          color: '#9E9E9E',
-        },
         ticks: {
-          fontColor: '#DEDEDE',
+          beginAtZero: true,
+          maxTicksLimit: 5,
         },
         scaleLabel: {
           display: true,
-          labelString: 'Balance',
-          fontColor: '#DEDEDE',
-          fontSize: 16,
+          labelString: 'Value',
         },
       },
     ],
@@ -87,28 +79,7 @@ function GraphComponent(props: GraphComponentProps) {
 
   return (
     <div className='chart-container'>
-      <div className='center-me'>
-        {
-          <Line
-            data={data}
-            options={{
-              responsive: true,
-              maintainAspectRatio: false,
-              scales: {
-                xAxis: {
-                  type: 'time',
-                  time: {
-                    displayFormats: {
-                      month: 'MMM yyyy',
-                    },
-                  },
-                },
-                yAxis: {},
-              },
-            }}
-          />
-        }
-      </div>
+      <div className='center-me'>{<Line data={data} options={options} />}</div>
     </div>
   );
 }
