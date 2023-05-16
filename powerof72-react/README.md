@@ -10,6 +10,16 @@ npm install rxjs
 ```
 
 ### chart-js nightmare.
+
 ```
 npm install date-fns chartjs-adapter-date-fns --save
+```
+
+### vercel deployment
+
+```
+vercel --build-env REACT_APP_SERVER_ENDPOINT=https://server.app/api/sa
+vercel --prod
+
+https://powerof72-react.vercel.app
 ```
