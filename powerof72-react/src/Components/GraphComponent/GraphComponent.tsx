@@ -11,36 +11,29 @@ const options: any = {
   responsive: true,
   maintainAspectRatio: false,
   scales: {
-    xAxes: [
-      {
-        type: 'time',
-        time: {
-          unit: 'month',
-          displayFormats: {
-            month: 'MMM yyyy',
-          },
-        },
-        ticks: {
-          maxTicksLimit: 20,
-        },
-        scaleLabel: {
-          display: true,
-          labelString: 'Date',
-        },
+    x: {
+      type: 'time',
+      time: {
+        unit: 'month',
       },
-    ],
-    yAxes: [
-      {
-        ticks: {
-          beginAtZero: true,
-          maxTicksLimit: 5,
-        },
-        scaleLabel: {
-          display: true,
-          labelString: 'Value',
-        },
+      grid: {
+        color: () => '#282828',
       },
-    ],
+    },
+    y: {
+      display: true,
+      title: {
+        display: true,
+        text: 'Total $',
+      },
+      suggestedMin: 0,
+      ticks: {
+        callback: (value: number, index: number, values: number[]) => value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' '),
+      },
+      grid: {
+        color: () => '#282828',
+      },
+    },
   },
 };
 
