@@ -10,7 +10,7 @@ class handler(BaseHTTPRequestHandler):
         # querystring ?ticker=xxx&expiry=xx-xx-xxxx
         dic = dict(parse.parse_qsl(parse.urlsplit(self.path).query))
         ticker = dic["ticker"]
-        numOfYears = int(dic['numOfYears'])
+        numOfYears = int(dic["numOfYears"])
         principal = int(dic["principal"])
         addition = int(dic["addition"])
         frequency = dic["frequency"]
@@ -22,11 +22,13 @@ class handler(BaseHTTPRequestHandler):
         today = datetime.date.today()
         start_date = today - datetime.timedelta(days=numOfYears * 365)
 
-        dfResult = cost_average(ticker, principal, addition,
-                                frequency, start_date, today)
+        dfResult = cost_average(
+            ticker, principal, addition, frequency, start_date, today
+        )
 
-        jsonData = dfResult[["Date", "BalanceNoDivs", "Balance"]
-                            ].to_json(orient="records")
+        jsonData = dfResult[["Date", "Investment", "BalanceNoDivs", "Balance"]].to_json(
+            orient="records"
+        )
 
         self.wfile.write(jsonData.encode(encoding="utf_8"))
 

@@ -13,13 +13,13 @@ warnings.filterwarnings(
 
 def cost_average(ticker, principal, addition, frequency, start_date, end_date):
     df_prices = si.get_data(ticker, start_date, end_date)
-    df_dividends = si.get_dividends(
-        ticker, start_date=start_date, end_date=end_date)
+    df_dividends = si.get_dividends(ticker, start_date=start_date, end_date=end_date)
 
     # build result dataFrame
-    dfResults = pd.DataFrame(columns=["Date", "BalanceNoDivs", "Balance"])
+    dfResults = pd.DataFrame(columns=["Date", "Investment", "BalanceNoDivs", "Balance"])
 
     # calculate the initial number of shares.
+    investment = principal
     balance = principal
     balanceWithDiv = principal
     totalShares = principal / df_prices.iloc[0].close
@@ -58,6 +58,7 @@ def cost_average(ticker, principal, addition, frequency, start_date, end_date):
 
         # cost average on first available Friday
         if currentDate.weekday() == 4 and deltaDays >= freq_days:
+            investment = investment + addition
             newShares = addition / closePrice
             totalShares += newShares
             totalSharesWithDivs += newShares
@@ -70,25 +71,29 @@ def cost_average(ticker, principal, addition, frequency, start_date, end_date):
         # append data into the results dataframe but only for Fridays.
         if currentDate.weekday() == 4:
             dfResults.loc[len(dfResults)] = [
-                currentDate, balance, balanceWithDiv]
+                currentDate,
+                investment,
+                balance,
+                balanceWithDiv,
+            ]
 
     return dfResults
 
 
 def test():
-    ticker = 'VTI'
+    ticker = "VTI"
     principal = 1000
     addition = 100
-    frequency = 'monthly'
+    frequency = "monthly"
 
     today = datetime.date.today()
     numOfYears = 10
     start_date = today - datetime.timedelta(days=numOfYears * 365)
-    dfResult = cost_average(ticker, principal, addition,
-                            frequency, start_date, today)
+    dfResult = cost_average(ticker, principal, addition, frequency, start_date, today)
 
-    jsonData = dfResult[["Date", "BalanceNoDivs", "Balance"]
-                        ].to_json(orient="records")
+    jsonData = dfResult[["Date", "Investment", "BalanceNoDivs", "Balance"]].to_json(
+        orient="records"
+    )
 
     print(jsonData)
 

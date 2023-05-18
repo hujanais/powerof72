@@ -11,6 +11,14 @@ import './TableComponent.scss';
 
 export type TableComponentProps = { jsonArr: SAResponse[] };
 
+const formatDate = (timestamp: number) => {
+  return new Date(timestamp).toLocaleDateString();
+};
+
+const formatDecimals = (value: number) => {
+  return value.toFixed(0);
+};
+
 export const TableComponent = (props: TableComponentProps) => {
   return (
     <div className='table-container'>
@@ -19,6 +27,7 @@ export const TableComponent = (props: TableComponentProps) => {
           <TableHead>
             <TableRow>
               <TableCell>Date</TableCell>
+              <TableCell align='right'>Total Investment</TableCell>
               <TableCell align='right'>Balance(no-divs)</TableCell>
               <TableCell align='right'>Balance</TableCell>
             </TableRow>
@@ -27,10 +36,11 @@ export const TableComponent = (props: TableComponentProps) => {
             {props.jsonArr.map((row: SAResponse) => (
               <TableRow key={row.Date} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                 <TableCell component='th' scope='row'>
-                  {row.Date}
+                  {formatDate(row.Date)}
                 </TableCell>
-                <TableCell align='right'>{row.BalanceNoDivs}</TableCell>
-                <TableCell align='right'>{row.Balance}</TableCell>
+                <TableCell align='right'>{formatDecimals(row.Investment)}</TableCell>
+                <TableCell align='right'>{formatDecimals(row.BalanceNoDivs)}</TableCell>
+                <TableCell align='right'>{formatDecimals(row.Balance)}</TableCell>
               </TableRow>
             ))}
           </TableBody>
