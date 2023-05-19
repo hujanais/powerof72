@@ -41,6 +41,13 @@ const data = {
   labels: [],
   datasets: [
     {
+      label: 'principal',
+      data: [],
+      pointRadius: 0,
+      borderWidth: 1,
+      borderColor: 'blue',
+    },
+    {
       label: 'no-div',
       data: [],
       pointRadius: 0,
@@ -68,11 +75,13 @@ function GraphComponent(props: GraphComponentProps) {
     (data.labels as number[]).length = 0;
     (data.datasets[0].data as number[]).length = 0;
     (data.datasets[1].data as number[]).length = 0;
+    (data.datasets[2].data as number[]).length = 0;
 
     for (const row of props.jsonArr) {
       (data.labels as number[]).push(row.Date);
-      (data.datasets[0].data as number[]).push(row.BalanceNoDivs);
-      (data.datasets[1].data as number[]).push(row.Balance);
+      (data.datasets[0].data as number[]).push(row.Investment);
+      (data.datasets[1].data as number[]).push(row.BalanceNoDivs);
+      (data.datasets[2].data as number[]).push(row.Balance);
     }
 
     if (lineRef.current) {

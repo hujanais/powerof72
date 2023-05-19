@@ -60,11 +60,8 @@ export const MainComponent = () => {
         <div className='action-area'>
           <InputComponent onRequest={handleOnRequest}></InputComponent>
         </div>
-        <div className='action-area'>
-          <InterestComponent apr_apy={apr_apy}></InterestComponent>
-        </div>
         <div className='result-area'>
-          <ResultComponent jsonArr={jsonArr}></ResultComponent>
+          <ResultComponent jsonArr={jsonArr} apr_apy={apr_apy}></ResultComponent>
         </div>
       </div>
     </div>

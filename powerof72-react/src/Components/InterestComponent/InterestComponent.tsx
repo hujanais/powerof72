@@ -7,5 +7,11 @@ export type InterestComponentProps = {
 };
 
 export const InterestComponent = (props: InterestComponentProps) => {
-  return <div>{JSON.stringify(props.apr_apy)}</div>;
+  return <div className='interest-container'>
+    <div>APY-noDivs</div>
+    <div>APY</div>
+    <div>APR-noDivs</div>
+    <div>APR</div>
+  </div>
+  // return <div>{JSON.stringify(props.apr_apy)}</div>;
 };

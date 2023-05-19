@@ -4,12 +4,24 @@
   flex-direction: column;
   gap: 5px;
 
-  &__table {
+  &__result {
     border: 1px solid green;
+    display: flex;
+    flex-direction: row;
 
-    .div-table {
+    .div-result {
+      display: flex;
       height: 100%;
       width: 100%;
+    
+      &_interest {
+        flex: 1;
+      }
+
+      &_table {
+        flex:1;
+      }
+
     }
   }
 
