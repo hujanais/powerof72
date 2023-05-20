@@ -5,6 +5,7 @@ import { InputComponent } from '../InputComponent/InputComponent';
 import { ResultComponent } from '../ResultComponent/ResultComponent';
 import { InterestResult, SARequest, SAResponse } from '../../Models/data-model';
 import { InterestComponent } from '../InterestComponent/InterestComponent';
+import { Alert, CircularProgress, Snackbar } from '@mui/material';
 
 export const MainComponent = () => {
     const [jsonArr, setJsonArr] = useState<SAResponse[]>([]);
@@ -14,6 +15,16 @@ export const MainComponent = () => {
         apr_nodivs: 0,
         apr_divs: 0
     });
+    const [loading, setLoading] = useState<boolean>(false);
+    const [openError, setOpenError] = useState<boolean>(false);
+    const [errorMsg, setErrorMsg] = useState<string>('');
+
+    const handleClose = (event: any, reason: any) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setOpenError(false);
+    };
 
     // APR and APY are both measures of interest, but they are calculated differently.
     // APR stands for Annual Percentage Rate and it is the interest rate on an account
@@ -47,17 +58,36 @@ export const MainComponent = () => {
 
     const handleOnRequest = async (request: SARequest) => {
         const years = request.years;
-        const jsonArr: SAResponse[] = await apiService.getData(request);
-        const lastEntry = jsonArr[jsonArr.length - 1];
+        setErrorMsg('');
+        setOpenError(false);
+        setLoading(true);
+        try {
+            const jsonArr: SAResponse[] = await apiService.getData(request);
+            const lastEntry = jsonArr[jsonArr.length - 1];
 
-        const apr_apy = calculateReturns(lastEntry.Investment, lastEntry.BalanceNoDivs, lastEntry.Balance, years);
-        setAprApy(apr_apy);
-        setJsonArr(jsonArr);
+            const apr_apy = calculateReturns(lastEntry.Investment, lastEntry.BalanceNoDivs, lastEntry.Balance, years);
+            setAprApy(apr_apy);
+            setJsonArr(jsonArr);
+            setLoading(false);
+        } catch (err: any) {
+            setLoading(false);
+            setOpenError(true);
+            setErrorMsg(err.message);
+            console.log(err);
+        }
     };
 
     return (
         <div className="main-container">
+            <Snackbar open={openError} autoHideDuration={3000} onClose={handleClose}>
+                <Alert severity="error">{errorMsg}</Alert>
+            </Snackbar>
             <div className="main-container__card">
+                {loading && (
+                    <Alert severity="success">
+                        <div style={{ color: 'orange' }}>Retrieving stock data. Please wait...</div>
+                    </Alert>
+                )}
                 <div className="action-area">
                     <InputComponent onRequest={handleOnRequest}></InputComponent>
                 </div>
