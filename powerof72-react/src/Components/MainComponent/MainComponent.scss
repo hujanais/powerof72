@@ -1,19 +1,19 @@
 .main-container {
-  height: inherit;
-  padding: 10px;
+    height: inherit;
+    padding: 10px;
 
-  &__card {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    row-gap: 5px;
-  }
+    &__card {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        row-gap: 5px;
+    }
 
-  .action-area {
-    border: 1px solid green;
-  }
+    .action-area {
+        border: 1px solid #363636;
+    }
 
-  .result-area {
-    flex: 1;
-  }
+    .result-area {
+        flex: 1;
+    }
 }

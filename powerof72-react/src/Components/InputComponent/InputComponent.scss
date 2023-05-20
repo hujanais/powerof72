@@ -1,7 +1,7 @@
 .input-container {
-  display: flex;
-  flex-direction: row;
-  padding: 10px;
-  gap: 10px;
-  align-items: baseline;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    padding: 5px;
+    align-items: baseline;
 }
