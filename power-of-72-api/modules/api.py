@@ -57,7 +57,7 @@ def cost_average(ticker, principal, addition, frequency, start_date, end_date):
         deltaDays = (currentDate - last_invest_date).days
 
         # cost average on first available Friday
-        if currentDate.weekday() == 4 and deltaDays >= freq_days:
+        if deltaDays >= freq_days:
             investment = investment + addition
             newShares = addition / closePrice
             totalShares += newShares
