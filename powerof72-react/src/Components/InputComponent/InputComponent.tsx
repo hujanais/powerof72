@@ -66,6 +66,9 @@ export const InputComponent = (props: InputComponentProps) => {
       <FormControl sx={{ m: 1, minWidth: 200 }}>
         <InputLabel>Years</InputLabel>
         <Select value={years} label='Years' onChange={handleYearsChanged}>
+          <MenuItem value={1}>1</MenuItem>
+          <MenuItem value={2}>2</MenuItem>
+          <MenuItem value={3}>3</MenuItem>
           <MenuItem value={5}>5</MenuItem>
           <MenuItem value={10}>10</MenuItem>
           <MenuItem value={20}>20</MenuItem>
